@@ -42,19 +42,22 @@ public class ProductDAOImpl implements ProductDAO {
 
 	@Override
 	public Product getProductById(int theId) {
-		// TODO Auto-generated method stub
-		return null;
+		// get current hibernate session
+		Session currentSession = entityManager.unwrap(Session.class);
+		Product theProduct = currentSession.get(Product.class, theId);
+		return theProduct;
 	}
 
-	@Override
-	public void updateProduct(int theId) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void deleteProduct(int theId) {
-		// TODO Auto-generated method stub
+		// get current hibernate session
+		Session currentSession = entityManager.unwrap(Session.class);
+		// create a query to get the product
+		Query theQuery = currentSession.createQuery(
+						"delete from Product where id=:theProductId");
+		theQuery.setParameter("theProductId", theId);
+		theQuery.executeUpdate();
 		
 	}
 

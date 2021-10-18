@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mycompany.storemanager.entity.Product;
 import com.mycompany.storemanager.service.ProductService;
@@ -57,8 +56,22 @@ public class ProductController {
 			// redirect to list
 			return "redirect:/products/list";
 		}
-		
-		
+	}
+	
+	@GetMapping("/showUpdateForm")
+	public String showUpdateForm(@RequestParam("productId") int theId,
+						Model theModel) {
+		// get the product
+		Product theProduct = productService.getProductById(theId);
+		// add to the model to prepopulate the add-product form
+		theModel.addAttribute("product",theProduct);
+		return "add-product-form";
+	}
+	
+	@GetMapping("/deleteProduct")
+	public String deleteProduct(@RequestParam("productId") int theId) {
+		productService.deleteProduct(theId);
+		return "redirect:/products/list";
 	}
 	
 }

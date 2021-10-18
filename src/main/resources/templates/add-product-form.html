@@ -9,6 +9,9 @@
 
 <form action="#" th:action="@{/products/saveProduct}"
           			 th:object="${product}" method="POST">
+          			 
+       <!-- add hiden field to handle update -->
+       <input type="hidden" th:field="*{id}">
              
 <input type="text" th:field="*{name}" placeholder="Product name"
 		class="form-control"/>

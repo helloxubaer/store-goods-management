@@ -10,8 +10,6 @@ public interface ProductService {
 	
 	public Product getProductById(int theId);
 	
-	public void updateProduct(int theId);
-	
 	public void deleteProduct(int theId);
 	
 	public void save(Product theProduct);
