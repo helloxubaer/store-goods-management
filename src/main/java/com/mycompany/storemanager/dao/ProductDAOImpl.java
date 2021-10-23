@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 
@@ -19,6 +20,7 @@ public class ProductDAOImpl implements ProductDAO {
 	// unrwrap hibernate session
 	// leverage native hibernate functions
 	@Autowired
+	@Qualifier("appDataEntityManagerFactoryBean")
 	private EntityManager entityManager;
 
 	@Override

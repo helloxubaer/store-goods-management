@@ -1,16 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>store manager</title>
 </head>
 <body>
-Store manager home
+Store Management System
+<div sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')">
+    <a th:href=@{/products/list}>Show product list</a>
+</div>
 
-<a th:href=@{/products/list}>to products</a>
+<div sec:authorize="hasRole('ROLE_SUPERVISOR')">
+	<br>
+	*****Necessary business rules *****
+	<br>
+    This content is only shown to SUPERVISOR.
+    <br>
+    ADMIN MANAGER resources are not available here !
+    <br>
+</div>
+
+
 <br>
 <hr>
-End points:<br>
+End points(REST API) CRUD Operation<br>
+
 <a th:href=@{/api/products}>get all products(json)</a>
+
+<br>
+<!-- display logged user info -->
+<hr>
+logged-in user info
+<br>
+<span th:text="${#authentication.getPrincipal().getUsername()}"></span>
+<span th:text="${#authentication.getPrincipal().authorities}"></span>
+<hr>
+<br>
+<!-- <a th:href=@{/logout}>logout</a> -->
+<form action="#" th:action="@{/logout}"
+          			 method="POST">
+    <input type="submit" value="Logout"/>
+          			 </form>
 </body>
 </html>

@@ -11,8 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,14 +35,18 @@ public class Product {
 	@Column(name = "id")
 	private int id;
 	
+	
 	@Column(name = "product_name")
-	@NotNull
+	@NotNull(message = "a name is required !")
 	@Size(min = 1, message = "a name is required")
 	private String name;
 	
 	@Column(name = "product_quantity")
-	private int quantity;
+	@Min(value = 0, message = "Must not be a negative number !")
+	private Integer quantity;
 	
+	@NotNull(message = "a date: yyyy-MM-dd is required !")
+	//@Pattern(regexp = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$",message = "Follow YYYY-MM-DD")
 	@Temporal(TemporalType.DATE)
 	@Column(name = "expired_on")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -49,7 +55,7 @@ public class Product {
 	public Product() {
 	}
 
-	public Product(String name, int quantity, Date expireDate) {
+	public Product(String name, Integer quantity, Date expireDate) {
 		this.name = name;
 		this.quantity = quantity;
 		this.expireDate = expireDate;
@@ -71,11 +77,11 @@ public class Product {
 		this.name = name;
 	}
 
-	public int getQuantity() {
+	public Integer getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(int quantity) {
+	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
 

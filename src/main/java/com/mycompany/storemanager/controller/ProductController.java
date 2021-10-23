@@ -5,10 +5,13 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +23,14 @@ import com.mycompany.storemanager.service.ProductService;
 @Controller
 @RequestMapping("/products")
 public class ProductController {
+	// initbinder
+	// trim leading and trailing spaces
+	@InitBinder
+	public void initBinder(WebDataBinder dataBinder) {
+		StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+		dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+	}
+	
 	
 	// inject product service
 	@Autowired
@@ -31,7 +42,7 @@ public class ProductController {
 		List<Product> productList = productService.getAllProducts();
 		// add to this as attribute to the model
 		theModel.addAttribute("products",productList);
-		return "all-products";
+		return "/products/all-products";
 	}
 	
 	@GetMapping("/showAddForm")
@@ -40,7 +51,7 @@ public class ProductController {
 		Product newProduct = new Product();
 		// add to this as attribute to the model
 		theModel.addAttribute("product",newProduct);
-		return "add-product-form";
+		return "/products/add-product-form";
 	}
 
 	@PostMapping("/saveProduct")
@@ -48,7 +59,7 @@ public class ProductController {
 							BindingResult result) {
 		if (result.hasErrors()) {
 			System.out.println("error");
-			return "add-product-form"; 
+			return "products/add-product-form"; 
 		}else {
 			System.out.println("no error");
 			// save employee
@@ -65,7 +76,7 @@ public class ProductController {
 		Product theProduct = productService.getProductById(theId);
 		// add to the model to prepopulate the add-product form
 		theModel.addAttribute("product",theProduct);
-		return "add-product-form";
+		return "/products/add-product-form";
 	}
 	
 	@GetMapping("/deleteProduct")
